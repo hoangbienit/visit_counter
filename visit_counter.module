@@ -33,9 +33,6 @@ $time_out = 60*15;
 $ip_address = $_SERVER['REMOTE_ADDR'];
 $last_visit = '';
   
-//$result = db_query("SELECT MAX(last_visit) FROM {visit_counter} WHERE ip = '$ip_address'");
-//$last_visit = $result->fetchColumn(0);
-  
 if(db_table_exists('visit_counter'))
 {
   $last_visit = db_select('visit_counter', 'v')
