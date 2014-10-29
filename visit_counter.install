@@ -1,0 +1,30 @@
+<?php
+
+/*
+*Implementats of hook_schema().
+*/
+function visit_counter_schema(){
+	$schema['visit_counter'] = array(
+		'fields' => array(
+			'visitor_id' => array(
+				'description' => 'Visit counter primary key',
+				'type' => 'serial',
+				'not null' => TRUE
+			),
+			'ip' => array(
+				'type' => 'varchar',
+				'length' => 32,
+				'not null' => TRUE,
+				'default' => '',
+			),
+			'last_visit' => array(
+				'type' => 'int',
+				'not null' => TRUE,
+				'default' => 0,
+			)
+		),
+		'primary key' => array('visitor_id'),
+	);
+	
+	return $schema;
+}

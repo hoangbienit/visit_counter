@@ -1,0 +1,58 @@
+<?php
+
+require_once dirname(__FILE__) . '/visit_counter.block.inc';
+
+/*
+*Implements hook_permission().
+*/
+function visit_counter_permission(){
+	return array(
+		'administer visit_counter' => array('title' => t('Administer visit counter module')),		
+    	'access visitors' => array('title' => t('View reports')),
+	);
+}
+
+/*
+*Menu callback. Prints a listing of active nodes on the site
+*/
+function visit_counter_menu(){
+	
+	$items['visit_counter'] = array(
+		'title' => 'Visit counter',
+		'description' => 'Configure visit counter settings.',
+		'page callback' => 'visit_counter',
+		'access callback' => TRUE,
+	);
+	
+	return $items;
+}
+
+/*insert data*/
+$time_now = time();
+$time_out = 60*15;
+$ip_address = $_SERVER['REMOTE_ADDR'];
+$last_visit = '';
+  
+//$result = db_query("SELECT MAX(last_visit) FROM {visit_counter} WHERE ip = '$ip_address'");
+//$last_visit = $result->fetchColumn(0);
+  
+if(db_table_exists('visit_counter'))
+{
+  $last_visit = db_select('visit_counter', 'v')
+	  ->fields('v', array('last_visit'))
+	  ->where("ip = '".$ip_address."'")
+	  ->orderBy('v.last_visit', 'DESC')
+	  ->range(0,1)
+	  ->execute()
+	  ->fetchColumn(0);
+
+  if(($last_visit + $time_out) <= $time_now)
+  {
+	  $sql = db_insert('visit_counter')
+	   ->fields(array(
+		  'ip' => $ip_address,
+		  'last_visit' => time(),
+	   ))
+	   ->execute();
+  }
+}
