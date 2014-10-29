@@ -1,5 +1,5 @@
 name = Visit_counter
-description = "This module used for displaying visitors counter. Develop by Hoang Van Bien CEO of www.thanhlapweb.net"
+description = "This module used for displaying visitors counter. Develop by Hoang Van Bien Developer at www.thanhlapweb.net"
 package = "Visit counter"
 core = "7.x"
 configure = admin/config/system/visit_counter
